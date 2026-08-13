@@ -1,0 +1,27 @@
+services:
+  travelai:
+    image: ${DOCKER_REGISTRY-}travelai
+    build:
+      context: .
+      dockerfile: TravelAI/Dockerfile
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=db;Database=TravelAIDb;User Id=sa;Password=Password123!;TrustServerCertificate=True
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Password123!
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+
+volumes:
+  sqlserver_data:
