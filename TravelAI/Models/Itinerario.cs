@@ -1,6 +1,6 @@
 ﻿namespace TravelAI.Models
 {
-    public class Itenerario
+    public class Itinerario
     {
         public Guid Id { get; set; }
         public int Versao { get; set; }
@@ -9,6 +9,6 @@
         public Guid ViagemId { get; set; }
         public Viagem? Viagem { get; set; }
 
-        public List<DiaItenerario> Dias { get; set; } = new();
+        public List<DiaItinerario> Dias { get; set; } = new();
     }
 }

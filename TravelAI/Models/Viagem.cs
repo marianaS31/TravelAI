@@ -9,10 +9,10 @@
         public DateTime DataFim { get; set; }
         public int NumViajantes { get; set; }
         public decimal Orcamento { get; set; }
-        //public EstadoViagem Estado { get; set; }
+        public EstadoViagem Estado { get; set; } = EstadoViagem.Planeamento;   
         public DateTime CriadoEm { get; set; }
         public DateTime AtualizadoEm { get; set; }
 
-        public List<Itenerario> Itenerarios { get; set; } = new();
+        public List<Itinerario> Itinerarios { get; set; } = new();
     }
 }

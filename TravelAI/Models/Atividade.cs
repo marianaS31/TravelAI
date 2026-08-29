@@ -12,7 +12,7 @@ namespace TravelAI.Models
         public string Local { get; set; } = string.Empty;
         public string? Detalhes { get; set; }
 
-        public Guid DiaItenerarioId { get; set; }
-        public DiaItenerario? DiaItenerario { get; set; }
+        public Guid DiaItinerarioId { get; set; }
+        public DiaItinerario? DiaItinerario { get; set; }
     }
 }

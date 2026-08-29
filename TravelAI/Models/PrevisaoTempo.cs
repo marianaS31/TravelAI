@@ -8,7 +8,7 @@
         public string Condicao { get; set; } = string.Empty;
         public float ProbabilidadePrecipitacao { get; set; }
 
-        public Guid DiaItenerarioId { get; set; }
-        public DiaItenerario? DiaItenerario { get; set; }
+        public Guid DiaItinerarioId { get; set; }
+        public DiaItinerario? DiaItinerario { get; set; }
     }
 }

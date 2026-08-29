@@ -11,6 +11,7 @@ services:
       - "8081:8081"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
       - ConnectionStrings__DefaultConnection=Server=db;Database=TravelAIDb;User Id=sa;Password=Password123!;TrustServerCertificate=True
 
   db:

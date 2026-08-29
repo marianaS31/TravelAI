@@ -9,7 +9,7 @@ namespace TravelAI.Data
             : base(options) { }
 
         public DbSet<Viagem> Viagens => Set<Viagem>();
-        public DbSet<Itenerario> Itenerarios => Set<Itenerario>();
+        public DbSet<Itinerario> Itenerarios => Set<Itinerario>();
         public DbSet<DiaItenerario> DiasItenerario => Set<DiaItenerario>();
         public DbSet<Atividade> Atividades => Set<Atividade>();
         public DbSet<PrevisaoTempo> PrevisoesTempo => Set<PrevisaoTempo>();
@@ -21,7 +21,7 @@ namespace TravelAI.Data
                 .WithOne(i => i.Viagem)
                 .HasForeignKey(i => i.ViagemId);
 
-            modelBuilder.Entity<Itenerario>()
+            modelBuilder.Entity<Itinerario>()
                 .HasMany(i => i.Dias)
                 .WithOne(d => d.Itenerario)
                 .HasForeignKey(d => d.ItinerarioId);
