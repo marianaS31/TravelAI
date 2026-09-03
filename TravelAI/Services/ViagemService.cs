@@ -2,12 +2,12 @@
 using TravelAI.DTOs;
 using TravelAI.Models;
 using TravelAI.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace TravelAI.Services
 {
-    public class ViagemService : IViagem
+    public class ViagemService : IViagemService
     {
-
         private readonly TravelAIContext _context;
         private readonly ILogger<ViagemService> _logger;
 
@@ -88,5 +88,4 @@ namespace TravelAI.Services
             v.Id, v.Titulo, v.Destino, v.DataInicio, v.DataFim,
             v.NumViajantes, v.Orcamento, v.Estado, v.CriadoEm, v.AtualizadoEm);
     }
-}
 }

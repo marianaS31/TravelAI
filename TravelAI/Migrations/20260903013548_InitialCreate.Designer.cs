@@ -12,8 +12,8 @@ using TravelAI.Data;
 namespace TravelAI.Migrations
 {
     [DbContext(typeof(TravelAIContext))]
-    [Migration("20260813015251_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20260903013548_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,7 +34,7 @@ namespace TravelAI.Migrations
                     b.Property<string>("Detalhes")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("DiaItenerarioId")
+                    b.Property<Guid>("DiaItinerarioId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("HoraFim")
@@ -61,12 +61,12 @@ namespace TravelAI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DiaItenerarioId");
+                    b.HasIndex("DiaItinerarioId");
 
                     b.ToTable("Atividades");
                 });
 
-            modelBuilder.Entity("TravelAI.Models.DiaItenerario", b =>
+            modelBuilder.Entity("TravelAI.Models.DiaItinerario", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -85,10 +85,10 @@ namespace TravelAI.Migrations
 
                     b.HasIndex("ItinerarioId");
 
-                    b.ToTable("DiasItenerario");
+                    b.ToTable("DiasItinerario");
                 });
 
-            modelBuilder.Entity("TravelAI.Models.Itenerario", b =>
+            modelBuilder.Entity("TravelAI.Models.Itinerario", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -107,7 +107,7 @@ namespace TravelAI.Migrations
 
                     b.HasIndex("ViagemId");
 
-                    b.ToTable("Itenerarios");
+                    b.ToTable("Itinerarios");
                 });
 
             modelBuilder.Entity("TravelAI.Models.PrevisaoTempo", b =>
@@ -120,7 +120,7 @@ namespace TravelAI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("DiaItenerarioId")
+                    b.Property<Guid>("DiaItinerarioId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<float>("ProbabilidadePrecipitacao")
@@ -134,7 +134,7 @@ namespace TravelAI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DiaItenerarioId")
+                    b.HasIndex("DiaItinerarioId")
                         .IsUnique();
 
                     b.ToTable("PrevisoesTempo");
@@ -162,6 +162,9 @@ namespace TravelAI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
                     b.Property<int>("NumViajantes")
                         .HasColumnType("int");
 
@@ -180,30 +183,30 @@ namespace TravelAI.Migrations
 
             modelBuilder.Entity("TravelAI.Models.Atividade", b =>
                 {
-                    b.HasOne("TravelAI.Models.DiaItenerario", "DiaItenerario")
+                    b.HasOne("TravelAI.Models.DiaItinerario", "DiaItinerario")
                         .WithMany("Atividades")
-                        .HasForeignKey("DiaItenerarioId")
+                        .HasForeignKey("DiaItinerarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("DiaItenerario");
+                    b.Navigation("DiaItinerario");
                 });
 
-            modelBuilder.Entity("TravelAI.Models.DiaItenerario", b =>
+            modelBuilder.Entity("TravelAI.Models.DiaItinerario", b =>
                 {
-                    b.HasOne("TravelAI.Models.Itenerario", "Itenerario")
+                    b.HasOne("TravelAI.Models.Itinerario", "Itinerario")
                         .WithMany("Dias")
                         .HasForeignKey("ItinerarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Itenerario");
+                    b.Navigation("Itinerario");
                 });
 
-            modelBuilder.Entity("TravelAI.Models.Itenerario", b =>
+            modelBuilder.Entity("TravelAI.Models.Itinerario", b =>
                 {
                     b.HasOne("TravelAI.Models.Viagem", "Viagem")
-                        .WithMany("Itenerarios")
+                        .WithMany("Itinerarios")
                         .HasForeignKey("ViagemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -213,30 +216,30 @@ namespace TravelAI.Migrations
 
             modelBuilder.Entity("TravelAI.Models.PrevisaoTempo", b =>
                 {
-                    b.HasOne("TravelAI.Models.DiaItenerario", "DiaItenerario")
+                    b.HasOne("TravelAI.Models.DiaItinerario", "DiaItinerario")
                         .WithOne("PrevisaoTempo")
-                        .HasForeignKey("TravelAI.Models.PrevisaoTempo", "DiaItenerarioId")
+                        .HasForeignKey("TravelAI.Models.PrevisaoTempo", "DiaItinerarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("DiaItenerario");
+                    b.Navigation("DiaItinerario");
                 });
 
-            modelBuilder.Entity("TravelAI.Models.DiaItenerario", b =>
+            modelBuilder.Entity("TravelAI.Models.DiaItinerario", b =>
                 {
                     b.Navigation("Atividades");
 
                     b.Navigation("PrevisaoTempo");
                 });
 
-            modelBuilder.Entity("TravelAI.Models.Itenerario", b =>
+            modelBuilder.Entity("TravelAI.Models.Itinerario", b =>
                 {
                     b.Navigation("Dias");
                 });
 
             modelBuilder.Entity("TravelAI.Models.Viagem", b =>
                 {
-                    b.Navigation("Itenerarios");
+                    b.Navigation("Itinerarios");
                 });
 #pragma warning restore 612, 618
         }

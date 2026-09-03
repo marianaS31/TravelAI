@@ -3,7 +3,7 @@
 namespace TravelAI.DTOs
 {
     
-    public class AtividadeCreateDto(
+    public class AtividadeCreateDTO(
         string Nome,
         TipoAtividade Tipo,
         string HoraInicio,
@@ -12,7 +12,7 @@ namespace TravelAI.DTOs
         string? Detalhes
     );
 
-    public class AtividadeUpdateDto(
+    public class AtividadeUpdateDTO(
         string? Nome,
         TipoAtividade? Tipo,
         string? HoraInicio,
@@ -21,7 +21,7 @@ namespace TravelAI.DTOs
         string? Detalhes
     );
 
-    public class AtividadeResponseDto(
+    public class AtividadeResponseDTO(
         Guid Id,
         int Ordem,
         string Nome,
@@ -32,5 +32,5 @@ namespace TravelAI.DTOs
         string? Detalhes
     );
 
-    public class ReordenarAtividadesDto(List<Guid> OrdemAtividadeIds);
+    public class ReordenarAtividadesDTO(List<Guid> OrdemAtividadeIds);
 }

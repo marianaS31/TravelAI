@@ -1,17 +1,17 @@
 ﻿namespace TravelAI.DTOs
 {
    
-    public class GerarItinerarioRequestDto(
+    public class GerarItinerarioRequestDTO(
         Guid ViagemId,
         string? InstrucoesAdicionais
     );
 
-    public class ItinerarioResponseDto(
+    public class ItinerarioResponseDTO(
         Guid Id,
         Guid ViagemId,
         int Versao,
         DateTime CriadoEm,
-        List<DiaItinerarioResponseDto> Dias
+        List<DiaItinerarioResponseDTO> Dias
     );
 
 }

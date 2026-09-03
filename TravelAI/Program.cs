@@ -1,7 +1,18 @@
 using Microsoft.EntityFrameworkCore;
 using TravelAI.Data;
+using TravelAI.Interfaces;
+using TravelAI.Models;
+using TravelAI.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.AddScoped<IViagemService, ViagemService>();
+//builder.Services.AddScoped<IItinerario, ItinerarioService>();
+//builder.Services.AddScoped<IDiaItinerario, DiaItinerarioService>();
+//builder.Services.AddScoped<IAtividade, AtividadeService>();
+
 
 // Add services to the container.
 

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TravelAI.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -22,6 +22,7 @@ namespace TravelAI.Migrations
                     DataFim = table.Column<DateTime>(type: "datetime2", nullable: false),
                     NumViajantes = table.Column<int>(type: "int", nullable: false),
                     Orcamento = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
+                    Estado = table.Column<int>(type: "int", nullable: false),
                     CriadoEm = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AtualizadoEm = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -31,7 +32,7 @@ namespace TravelAI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Itenerarios",
+                name: "Itinerarios",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -41,9 +42,9 @@ namespace TravelAI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Itenerarios", x => x.Id);
+                    table.PrimaryKey("PK_Itinerarios", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Itenerarios_Viagens_ViagemId",
+                        name: "FK_Itinerarios_Viagens_ViagemId",
                         column: x => x.ViagemId,
                         principalTable: "Viagens",
                         principalColumn: "Id",
@@ -51,7 +52,7 @@ namespace TravelAI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DiasItenerario",
+                name: "DiasItinerario",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -61,11 +62,11 @@ namespace TravelAI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DiasItenerario", x => x.Id);
+                    table.PrimaryKey("PK_DiasItinerario", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DiasItenerario_Itenerarios_ItinerarioId",
+                        name: "FK_DiasItinerario_Itinerarios_ItinerarioId",
                         column: x => x.ItinerarioId,
-                        principalTable: "Itenerarios",
+                        principalTable: "Itinerarios",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -82,15 +83,15 @@ namespace TravelAI.Migrations
                     HoraFim = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Local = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Detalhes = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DiaItenerarioId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    DiaItinerarioId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Atividades", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Atividades_DiasItenerario_DiaItenerarioId",
-                        column: x => x.DiaItenerarioId,
-                        principalTable: "DiasItenerario",
+                        name: "FK_Atividades_DiasItinerario_DiaItinerarioId",
+                        column: x => x.DiaItinerarioId,
+                        principalTable: "DiasItinerario",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -104,38 +105,38 @@ namespace TravelAI.Migrations
                     TempMin = table.Column<float>(type: "real", nullable: false),
                     Condicao = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProbabilidadePrecipitacao = table.Column<float>(type: "real", nullable: false),
-                    DiaItenerarioId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    DiaItinerarioId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PrevisoesTempo", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PrevisoesTempo_DiasItenerario_DiaItenerarioId",
-                        column: x => x.DiaItenerarioId,
-                        principalTable: "DiasItenerario",
+                        name: "FK_PrevisoesTempo_DiasItinerario_DiaItinerarioId",
+                        column: x => x.DiaItinerarioId,
+                        principalTable: "DiasItinerario",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Atividades_DiaItenerarioId",
+                name: "IX_Atividades_DiaItinerarioId",
                 table: "Atividades",
-                column: "DiaItenerarioId");
+                column: "DiaItinerarioId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DiasItenerario_ItinerarioId",
-                table: "DiasItenerario",
+                name: "IX_DiasItinerario_ItinerarioId",
+                table: "DiasItinerario",
                 column: "ItinerarioId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Itenerarios_ViagemId",
-                table: "Itenerarios",
+                name: "IX_Itinerarios_ViagemId",
+                table: "Itinerarios",
                 column: "ViagemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PrevisoesTempo_DiaItenerarioId",
+                name: "IX_PrevisoesTempo_DiaItinerarioId",
                 table: "PrevisoesTempo",
-                column: "DiaItenerarioId",
+                column: "DiaItinerarioId",
                 unique: true);
         }
 
@@ -149,10 +150,10 @@ namespace TravelAI.Migrations
                 name: "PrevisoesTempo");
 
             migrationBuilder.DropTable(
-                name: "DiasItenerario");
+                name: "DiasItinerario");
 
             migrationBuilder.DropTable(
-                name: "Itenerarios");
+                name: "Itinerarios");
 
             migrationBuilder.DropTable(
                 name: "Viagens");
