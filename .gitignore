@@ -432,3 +432,4 @@ FodyWeavers.xsd
 appsettings.Development.json
 appsettings.*.json
 !appsettings.json
+McpServers/.env.example

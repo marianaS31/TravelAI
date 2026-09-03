@@ -2,7 +2,7 @@
 
 namespace TravelAI.Controllers
 {
-    public class Atividade : Controller
+    public class AtividadeController : Controller
     {
         public IActionResult Index()
         {

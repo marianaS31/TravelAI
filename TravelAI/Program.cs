@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TravelAI.Data;
 using TravelAI.Interfaces;
+using TravelAI.McpIntegration;
 using TravelAI.Models;
 using TravelAI.Services;
 
@@ -9,9 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddScoped<IViagemService, ViagemService>();
-//builder.Services.AddScoped<IItinerario, ItinerarioService>();
-//builder.Services.AddScoped<IDiaItinerario, DiaItinerarioService>();
-//builder.Services.AddScoped<IAtividade, AtividadeService>();
+//builder.Services.AddScoped<IItinerarioService, ItinerarioService>();
+builder.Services.AddScoped<IDiaItinerarioService, DiaItinerarioService>();
+builder.Services.AddScoped<IAtividadeService, AtividadeService>();
 
 
 // Add services to the container.
@@ -23,6 +24,12 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<TravelAIContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.Configure<List<McpServerConfig>>(
+    builder.Configuration.GetSection("McpServers"));
+
+builder.Services.AddSingleton<IMcpOrchestrator, McpOrchestrator>();
+builder.Services.AddHttpClient<ILlmService, LmStudioLlmService>();
 
 var app = builder.Build();
 
@@ -38,5 +45,11 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapGet("/api/test-mcp-tools", async (IMcpOrchestrator mcpOrchestrator) =>
+{
+    var tools = await mcpOrchestrator.DescobrirFerramentasAsync();
+    return Results.Ok(tools);
+});
 
 app.Run();
