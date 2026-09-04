@@ -2,16 +2,13 @@
 
 namespace TravelAI.DTOs
 {
-
     public class AtividadeCreateDTO
     {
-
-
         public string Nome { get; set; } = string.Empty;
         public TipoAtividade Tipo { get; set; }
-        public string HoraInicio { get; set; }
-        public string HoraFim { get; set; }
-        public string Local { get; set; }
+        public string HoraInicio { get; set; } = string.Empty;
+        public string HoraFim { get; set; } = string.Empty;
+        public string Local { get; set; } = string.Empty;
         public string? Detalhes { get; set; }
     }
 
@@ -27,18 +24,6 @@ namespace TravelAI.DTOs
 
     public class AtividadeResponseDTO
     {
-        public AtividadeResponseDTO(Guid id, int ordem, string nome, TipoAtividade tipo, string horaInicio, string horaFim, string local, string? detalhes)
-        {
-            Id = id;
-            Ordem = ordem;
-            Nome = nome;
-            Tipo = tipo;
-            HoraInicio = horaInicio;
-            HoraFim = horaFim;
-            Local = local;
-            Detalhes = detalhes;
-        }
-
         public Guid Id { get; set; }
         public int Ordem { get; set; }
         public string Nome { get; set; } = string.Empty;

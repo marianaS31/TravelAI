@@ -37,7 +37,8 @@ namespace TravelAI.Services
             return dia is null ? null : MapToDto(dia);
         }
 
-        private static DiaItinerarioResponseDTO MapToDto(Models.DiaItinerario d)
+     
+        private static DiaItinerarioResponseDTO MapToDto(DiaItinerario d)
         {
             var previsaoDto = d.PrevisaoTempo is null
                 ? null
@@ -49,11 +50,21 @@ namespace TravelAI.Services
 
             var atividadesDto = d.Atividades
                 .OrderBy(a => a.Ordem)
-                .Select(a => new AtividadeResponseDTO(
-                    a.Id, a.Ordem, a.Nome, a.Tipo, a.HoraInicio, a.HoraFim, a.Local, a.Detalhes))
+                .Select(a => new AtividadeResponseDTO
+                {
+                    Id = a.Id,
+                    Ordem = a.Ordem,
+                    Nome = a.Nome,
+                    Tipo = a.Tipo,
+                    HoraInicio = a.HoraInicio,
+                    HoraFim = a.HoraFim,
+                    Local = a.Local,
+                    Detalhes = a.Detalhes
+                })
                 .ToList();
 
             return new DiaItinerarioResponseDTO(d.Id, d.NumeroDia, d.Data, atividadesDto, previsaoDto);
         }
+
     }
 }

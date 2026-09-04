@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddScoped<IViagemService, ViagemService>();
-//builder.Services.AddScoped<IItinerarioService, ItinerarioService>();
+builder.Services.AddScoped<IItinerarioService, ItinerarioService>();
 builder.Services.AddScoped<IDiaItinerarioService, DiaItinerarioService>();
 builder.Services.AddScoped<IAtividadeService, AtividadeService>();
 
@@ -29,7 +29,11 @@ builder.Services.Configure<List<McpServerConfig>>(
     builder.Configuration.GetSection("McpServers"));
 
 builder.Services.AddSingleton<IMcpOrchestrator, McpOrchestrator>();
-builder.Services.AddHttpClient<ILlmService, LmStudioLlmService>();
+
+builder.Services.AddHttpClient<ILlmService, LmStudioLlmService>(client =>
+{
+    client.Timeout = TimeSpan.FromMinutes(5);
+});
 
 var app = builder.Build();
 

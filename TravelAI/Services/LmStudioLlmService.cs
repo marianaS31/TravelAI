@@ -49,17 +49,76 @@ namespace TravelAI.Services
                 ["model"] = _modelo,
                 ["messages"] = new[]
                 {
-                    new { role = "system", content = systemPrompt },
-                    new { role = "user", content = prompt }
-                },
+            new { role = "system", content = systemPrompt },
+            new { role = "user", content = prompt }
+        },
                 ["temperature"] = 0.1,
-                ["response_format"] = new { type = "json_object" }
+                ["response_format"] = new
+                {
+                    type = "json_schema",
+                    json_schema = new
+                    {
+                        name = "itinerario_estruturado",
+                        strict = true,
+                        schema = new
+                        {
+                            type = "object",
+                            properties = new
+                            {
+                                dias = new
+                                {
+                                    type = "array",
+                                    items = new
+                                    {
+                                        type = "object",
+                                        properties = new
+                                        {
+                                            numeroDia = new { type = "integer" },
+                                            data = new { type = "string" },
+                                            atividades = new
+                                            {
+                                                type = "array",
+                                                items = new
+                                                {
+                                                    type = "object",
+                                                    properties = new
+                                                    {
+                                                        nome = new { type = "string" },
+                                                        tipo = new
+                                                        {
+                                                            type = "string",
+                                                            @enum = new[] { "VOO", "ALOJAMENTO", "PONTO_INTERESSE", "ALUGUER_CARRO", "REFEICAO", "DESLOCACAO", "OUTRO" }
+                                                        },
+                                                        horaInicio = new { type = "string" },
+                                                        horaFim = new { type = "string" },
+                                                        local = new { type = "string" },
+                                                        detalhes = new { type = "string" }
+                                                    },
+                                                    required = new[] { "nome", "tipo", "horaInicio", "horaFim", "local", "detalhes" }
+                                                }
+                                            }
+                                        },
+                                        required = new[] { "numeroDia", "data", "atividades" }
+                                    }
+                                }
+                            },
+                            required = new[] { "dias" }
+                        }
+                    }
+                }
             };
 
             var resposta = await EnviarAsync(payload);
             var conteudo = ExtrairConteudoTexto(resposta);
 
             if (string.IsNullOrWhiteSpace(conteudo)) return null;
+
+            // Salvaguarda: remove blocos markdown ```json se o modelo os incluir mesmo assim
+            conteudo = conteudo.Trim();
+            if (conteudo.StartsWith("```"))
+            {
+                conteudo = conteudo.Trim('`').Replace("json", "", StringComparison.OrdinalIgnoreCase).Trim();
+            }
 
             try
             {
@@ -77,10 +136,15 @@ namespace TravelAI.Services
             var json = JsonSerializer.Serialize(payload, _jsonOptions);
             var conteudo = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var resposta = await _http.PostAsync("/chat/completions", conteudo);
-            resposta.EnsureSuccessStatusCode();
-
+            var resposta = await _http.PostAsync("chat/completions", conteudo);
             var corpo = await resposta.Content.ReadAsStringAsync();
+
+            if (!resposta.IsSuccessStatusCode)
+            {
+                _logger.LogError("LM Studio devolveu {StatusCode}: {Corpo}", resposta.StatusCode, corpo);
+                throw new HttpRequestException($"LM Studio erro {resposta.StatusCode}: {corpo}");
+            }
+
             return JsonDocument.Parse(corpo).RootElement;
         }
 

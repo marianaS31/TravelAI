@@ -1,14 +1,13 @@
 ﻿namespace TravelAI.DTOs
 {
-  
-    public class PrevisaoTempoResponseDTO(
+    public record PrevisaoTempoResponseDTO(
         float TempMax,
         float TempMin,
         string Condicao,
         float ProbabilidadePrecipitacao
     );
 
-    public class DiaItinerarioResponseDTO(
+    public record DiaItinerarioResponseDTO(
         Guid Id,
         int NumeroDia,
         DateTime Data,

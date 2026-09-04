@@ -97,7 +97,18 @@ namespace TravelAI.Services
             return true;
         }
 
-        private static AtividadeResponseDTO MapToDto(Atividade a) => new(
-            a.Id, a.Ordem, a.Nome, a.Tipo, a.HoraInicio, a.HoraFim, a.Local, a.Detalhes);
+  
+        private static AtividadeResponseDTO MapToDto(Atividade a) => new()
+        {
+            Id = a.Id,
+            Ordem = a.Ordem,
+            Nome = a.Nome,
+            Tipo = a.Tipo,
+            HoraInicio = a.HoraInicio,
+            HoraFim = a.HoraFim,
+            Local = a.Local,
+            Detalhes = a.Detalhes
+        };
+
     }
 }
