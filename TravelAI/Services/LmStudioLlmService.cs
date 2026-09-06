@@ -42,7 +42,8 @@ namespace TravelAI.Services
             return InterpretarResposta(resposta);
         }
 
-        public async Task<T?> ExtrairEstruturadoAsync<T>(string prompt, string systemPrompt) where T : class
+        public async Task<T?> ExtrairEstruturadoAsync<T>(
+    string prompt, string systemPrompt, object jsonSchemaDefinition) where T : class
         {
             var payload = new Dictionary<string, object?>
             {
@@ -58,52 +59,9 @@ namespace TravelAI.Services
                     type = "json_schema",
                     json_schema = new
                     {
-                        name = "itinerario_estruturado",
+                        name = typeof(T).Name,
                         strict = true,
-                        schema = new
-                        {
-                            type = "object",
-                            properties = new
-                            {
-                                dias = new
-                                {
-                                    type = "array",
-                                    items = new
-                                    {
-                                        type = "object",
-                                        properties = new
-                                        {
-                                            numeroDia = new { type = "integer" },
-                                            data = new { type = "string" },
-                                            atividades = new
-                                            {
-                                                type = "array",
-                                                items = new
-                                                {
-                                                    type = "object",
-                                                    properties = new
-                                                    {
-                                                        nome = new { type = "string" },
-                                                        tipo = new
-                                                        {
-                                                            type = "string",
-                                                            @enum = new[] { "VOO", "ALOJAMENTO", "PONTO_INTERESSE", "ALUGUER_CARRO", "REFEICAO", "DESLOCACAO", "OUTRO" }
-                                                        },
-                                                        horaInicio = new { type = "string" },
-                                                        horaFim = new { type = "string" },
-                                                        local = new { type = "string" },
-                                                        detalhes = new { type = "string" }
-                                                    },
-                                                    required = new[] { "nome", "tipo", "horaInicio", "horaFim", "local", "detalhes" }
-                                                }
-                                            }
-                                        },
-                                        required = new[] { "numeroDia", "data", "atividades" }
-                                    }
-                                }
-                            },
-                            required = new[] { "dias" }
-                        }
+                        schema = jsonSchemaDefinition
                     }
                 }
             };
@@ -113,7 +71,6 @@ namespace TravelAI.Services
 
             if (string.IsNullOrWhiteSpace(conteudo)) return null;
 
-            // Salvaguarda: remove blocos markdown ```json se o modelo os incluir mesmo assim
             conteudo = conteudo.Trim();
             if (conteudo.StartsWith("```"))
             {
@@ -126,7 +83,7 @@ namespace TravelAI.Services
             }
             catch (JsonException ex)
             {
-                _logger.LogError(ex, "Falha ao desserializar resposta estruturada do Gemma: {Conteudo}", conteudo);
+                _logger.LogError(ex, "Falha ao desserializar resposta estruturada: {Conteudo}", conteudo);
                 return null;
             }
         }

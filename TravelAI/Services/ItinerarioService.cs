@@ -20,6 +20,13 @@ namespace TravelAI.Services
             os dias da viagem.
             """;
 
+        private const string SystemPromptExtracaoTempo = """
+             Extrai a informação meteorológica do relatório seguinte e devolve APENAS
+            JSON válido, sem markdown, no formato pedido. Para "probabilidadePrecipitacao",
+            estima um valor entre 0 e 100 com base na descrição da condição (ex: "chuva forte"
+            ≈ 80, "chuvisco" ≈ 30, "céu limpo" ≈ 0).
+            """;
+
         public ItinerarioService(
             TravelAIContext context,
             IMcpOrchestrator mcpOrchestrator,
@@ -84,6 +91,97 @@ namespace TravelAI.Services
             return await PersistirItinerarioAsync(viagem.Id, estrutura);
         }
 
+        private async Task<List<PrevisaoDiaEstruturada>> ObterPrevisoesAsync(string destino, int numDias)
+        {
+            var diasAPedir = Math.Min(numDias, 7);
+            var resultado = await _mcpOrchestrator.ExecutarFerramentaAsync(
+                "open-meteo__get_weather",
+                new Dictionary<string, object?> { ["cidade"] = destino, ["dias"] = diasAPedir });
+
+            if (!resultado.Sucesso || string.IsNullOrWhiteSpace(resultado.ResultadoJson))
+            {
+                _logger.LogWarning("Não foi possível obter previsão do tempo para '{Destino}': {Erro}",
+                    destino, resultado.MensagemErro);
+                return new List<PrevisaoDiaEstruturada>();
+            }
+
+            var estrutura = await _llmService.ExtrairEstruturadoAsync<PrevisoesEstruturadas>(
+                resultado.ResultadoJson, SystemPromptExtracaoTempo, ConstruirSchemaTempo());
+
+            return estrutura?.Previsoes ?? new List<PrevisaoDiaEstruturada>();
+        }
+
+        private static object ConstruirSchemaTempo() => new
+        {
+            type = "object",
+            properties = new
+            {
+                previsoes = new
+                {
+                    type = "array",
+                    items = new
+                    {
+                        type = "object",
+                        properties = new
+                        {
+                            numeroDia = new { type = "integer" },
+                            tempMax = new { type = "number" },
+                            tempMin = new { type = "number" },
+                            condicao = new { type = "string" },
+                            probabilidadePrecipitacao = new { type = "number" }
+                        },
+                        required = new[] { "numeroDia", "tempMax", "tempMin", "condicao", "probabilidadePrecipitacao" }
+                    }
+                }
+            },
+            required = new[] { "previsoes" }
+        };
+
+        private static object ConstruirSchemaItinerario() => new
+        {
+            type = "object",
+            properties = new
+            {
+                dias = new
+                {
+                    type = "array",
+                    items = new
+                    {
+                        type = "object",
+                        properties = new
+                        {
+                            numeroDia = new { type = "integer" },
+                            data = new { type = "string" },
+                            atividades = new
+                            {
+                                type = "array",
+                                items = new
+                                {
+                                    type = "object",
+                                    properties = new
+                                    {
+                                        nome = new { type = "string" },
+                                        tipo = new
+                                        {
+                                            type = "string",
+                                            @enum = new[] { "VOO", "ALOJAMENTO", "PONTO_INTERESSE", "ALUGUER_CARRO", "REFEICAO", "DESLOCACAO", "OUTRO" }
+                                        },
+                                        horaInicio = new { type = "string" },
+                                        horaFim = new { type = "string" },
+                                        local = new { type = "string" },
+                                        detalhes = new { type = "string" }
+                                    },
+                                    required = new[] { "nome", "tipo", "horaInicio", "horaFim", "local", "detalhes" }
+                                }
+                            }
+                        },
+                        required = new[] { "numeroDia", "data", "atividades" }
+                    }
+                }
+            },
+            required = new[] { "dias" }
+        };
+
         private async Task<ItinerarioEstruturado?> ExtrairEGuardarItinerarioAsync(string textoLivre)
         {
             const string extractSystemPrompt = """
@@ -99,12 +197,15 @@ namespace TravelAI.Services
             if (string.IsNullOrWhiteSpace(textoLivre)) return null;
 
             return await _llmService.ExtrairEstruturadoAsync<ItinerarioEstruturado>(
-                textoLivre, extractSystemPrompt);
+                textoLivre, extractSystemPrompt, ConstruirSchemaItinerario());
         }
 
         private async Task<ItinerarioResponseDTO> PersistirItinerarioAsync(
             Guid viagemId, ItinerarioEstruturado estrutura)
         {
+            var viagem = await _context.Viagens.FindAsync(viagemId)
+                ?? throw new InvalidOperationException($"Viagem {viagemId} não encontrada.");
+
             var versaoAnterior = await _context.Itinerarios
                 .Where(i => i.ViagemId == viagemId)
                 .Select(i => (int?)i.Versao)
@@ -119,6 +220,11 @@ namespace TravelAI.Services
             };
             _context.Itinerarios.Add(itinerario);
 
+            // Previsão do tempo — limitação conhecida: só é significativa para
+            // viagens dentro dos próximos 7 dias (limite da API gratuita Open-Meteo)
+            var previsoes = await ObterPrevisoesAsync(viagem.Destino, estrutura.Dias.Count);
+
+            var diasCriados = new List<DiaItinerario>();
             foreach (var diaDto in estrutura.Dias)
             {
                 var dia = new DiaItinerario
@@ -129,6 +235,7 @@ namespace TravelAI.Services
                     Data = diaDto.Data
                 };
                 _context.DiasItinerario.Add(dia);
+                diasCriados.Add(dia);
 
                 var ordem = 0;
                 foreach (var ativDto in diaDto.Atividades)
@@ -145,6 +252,21 @@ namespace TravelAI.Services
                         HoraFim = ativDto.HoraFim,
                         Local = ativDto.Local ?? string.Empty,
                         Detalhes = ativDto.Detalhes
+                    });
+                }
+
+                // Associa a previsão correspondente, se existir para este número de dia
+                var previsaoDia = previsoes.FirstOrDefault(p => p.NumeroDia == diaDto.NumeroDia);
+                if (previsaoDia is not null)
+                {
+                    _context.PrevisoesTempo.Add(new PrevisaoTempo
+                    {
+                        Id = Guid.NewGuid(),
+                        DiaItinerarioId = dia.Id,
+                        TempMax = previsaoDia.TempMax,
+                        TempMin = previsaoDia.TempMin,
+                        Condicao = previsaoDia.Condicao,
+                        ProbabilidadePrecipitacao = previsaoDia.ProbabilidadePrecipitacao
                     });
                 }
             }
@@ -226,8 +348,7 @@ namespace TravelAI.Services
         );
     }
 
-    // Modelos internos usados só para desserializar a resposta JSON do Gemma —
-    // não confundir com os DTOs públicos da API
+   
     internal class ItinerarioEstruturado
     {
         public List<DiaEstruturado> Dias { get; set; } = new();
@@ -248,5 +369,19 @@ namespace TravelAI.Services
         public string HoraFim { get; set; } = string.Empty;
         public string? Local { get; set; }
         public string? Detalhes { get; set; }
+    }
+
+    internal class PrevisoesEstruturadas
+    {
+        public List<PrevisaoDiaEstruturada> Previsoes { get; set; } = new();
+    }
+
+    internal class PrevisaoDiaEstruturada
+    {
+        public int NumeroDia { get; set; }
+        public float TempMax { get; set; }
+        public float TempMin { get; set; }
+        public string Condicao { get; set; } = string.Empty;
+        public float ProbabilidadePrecipitacao { get; set; }
     }
 }

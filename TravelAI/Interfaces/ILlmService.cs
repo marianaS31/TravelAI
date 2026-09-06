@@ -17,8 +17,7 @@
             List<object>? ferramentasDisponiveis = null,
             int maxTokens = 4000);
 
-        // Chamada dedicada de extração: temperatura baixa + JSON mode,
-        // usada no fallback determinístico quando o Gemma não invoca tools
-        Task<T?> ExtrairEstruturadoAsync<T>(string prompt, string systemPrompt) where T : class;
+      
+        Task<T?> ExtrairEstruturadoAsync<T>(string prompt, string systemPrompt, object jsonSchemaDefinition) where T : class;
     }
 }
