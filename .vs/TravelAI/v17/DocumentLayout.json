@@ -1,0 +1,651 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Services\\ItinerarioService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\Services\\ItinerarioService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A867F0EB-636D-43E9-888B-8E3FA0C624FF}|TravelAI\\TravelAI.csproj|c:\\users\\maria\\documents\\lei\\lei\\3 ano\\projeto final\\travelai\\travelai\\travelai.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{A867F0EB-636D-43E9-888B-8E3FA0C624FF}|TravelAI\\TravelAI.csproj|solutionrelative:travelai\\travelai.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{81DDED9D-158B-E303-5F62-77A2896D2A5A}|docker-compose.dcproj|c:\\users\\maria\\documents\\lei\\lei\\3 ano\\projeto final\\travelai\\docker-compose.yml||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{81DDED9D-158B-E303-5F62-77A2896D2A5A}|docker-compose.dcproj|solutionrelative:docker-compose.yml||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Interfaces\\ILlmService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\Interfaces\\ILlmService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Services\\LmStudioLlmService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\Services\\LmStudioLlmService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\appsettings.Development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\appsettings.Development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Controllers\\ItenerarioController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\Controllers\\ItenerarioController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Controllers\\AtividadeController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\Controllers\\AtividadeController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Controllers\\DiaItinerarioController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\Controllers\\DiaItinerarioController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Controllers\\ViagemController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\Controllers\\ViagemController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\DTOs\\AtividadeDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\DTOs\\AtividadeDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Interfaces\\IItinerarioService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\Interfaces\\IItinerarioService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Services\\AtividadeService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\Services\\AtividadeService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Services\\DiaItinerarioService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\Services\\DiaItinerarioService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\McpIntegration\\McpModels.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\McpIntegration\\McpModels.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Models\\Atividade.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\Models\\Atividade.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\McpIntegration\\McpOrchestrato.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\McpIntegration\\McpOrchestrato.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\DTOs\\ItinerarioDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\DTOs\\ItinerarioDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\DTOs\\DiaItinerarioDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\DTOs\\DiaItinerarioDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Interfaces\\IMcpOrchestrator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\Interfaces\\IMcpOrchestrator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Interfaces\\IDiaItinerarioService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\Interfaces\\IDiaItinerarioService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\DTOs\\ViagemDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\DTOs\\ViagemDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Interfaces\\IViagemService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\Interfaces\\IViagemService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Data\\TravelAIContext .cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\Data\\TravelAIContext .cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Interfaces\\IAtividadeService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\Interfaces\\IAtividadeService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Services\\ViagemService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\Services\\ViagemService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Models\\Viagem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\Models\\Viagem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Models\\PrevisaoTempo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\Models\\PrevisaoTempo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Models\\TipoAtividade.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\Models\\TipoAtividade.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Models\\DiaItinerario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\Models\\DiaItinerario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Models\\Itinerario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\Models\\Itinerario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Models\\EstadoViagem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TravelAI\\Models\\EstadoViagem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 1243,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{fabf9319-47eb-497e-b8f6-d9f73fba5f55}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:2:0:{fabf9319-47eb-497e-b8f6-d9f73fba5f55}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:132:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{0ad07096-bba9-4900-a651-0598d26f6d24}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 27,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{da1e233c-cfa8-5021-b06c-abc3d02f44e8}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{5e385563-b223-56a3-bc93-275ed7d58a3a}"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 290,
+          "SelectedChildIndex": 8,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:3:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:2:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ILlmService.cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Interfaces\\ILlmService.cs",
+              "RelativeDocumentMoniker": "TravelAI\\Interfaces\\ILlmService.cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Interfaces\\ILlmService.cs",
+              "RelativeToolTip": "TravelAI\\Interfaces\\ILlmService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-03T17:57:27.596Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "LmStudioLlmService.cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Services\\LmStudioLlmService.cs",
+              "RelativeDocumentMoniker": "TravelAI\\Services\\LmStudioLlmService.cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Services\\LmStudioLlmService.cs",
+              "RelativeToolTip": "TravelAI\\Services\\LmStudioLlmService.cs",
+              "ViewState": "AgIAAD4AAAAAAAAAAAAiwFgAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-03T17:57:54.895Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ItinerarioService.cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Services\\ItinerarioService.cs",
+              "RelativeDocumentMoniker": "TravelAI\\Services\\ItinerarioService.cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Services\\ItinerarioService.cs",
+              "RelativeToolTip": "TravelAI\\Services\\ItinerarioService.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-03T23:45:17.468Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "appsettings.Development.json",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\appsettings.Development.json",
+              "RelativeDocumentMoniker": "TravelAI\\appsettings.Development.json",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\appsettings.Development.json",
+              "RelativeToolTip": "TravelAI\\appsettings.Development.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-08-13T01:55:31.372Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ItenerarioController.cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Controllers\\ItenerarioController.cs",
+              "RelativeDocumentMoniker": "TravelAI\\Controllers\\ItenerarioController.cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Controllers\\ItenerarioController.cs",
+              "RelativeToolTip": "TravelAI\\Controllers\\ItenerarioController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-04T00:01:24.695Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Program.cs",
+              "RelativeDocumentMoniker": "TravelAI\\Program.cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Program.cs",
+              "RelativeToolTip": "TravelAI\\Program.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAACQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-13T01:45:53.078Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "AtividadeController.cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Controllers\\AtividadeController.cs",
+              "RelativeDocumentMoniker": "TravelAI\\Controllers\\AtividadeController.cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Controllers\\AtividadeController.cs",
+              "RelativeToolTip": "TravelAI\\Controllers\\AtividadeController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-03T15:31:25.608Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "DiaItinerarioController.cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Controllers\\DiaItinerarioController.cs",
+              "RelativeDocumentMoniker": "TravelAI\\Controllers\\DiaItinerarioController.cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Controllers\\DiaItinerarioController.cs",
+              "RelativeToolTip": "TravelAI\\Controllers\\DiaItinerarioController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-04T00:02:32.482Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ViagemController.cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Controllers\\ViagemController.cs",
+              "RelativeDocumentMoniker": "TravelAI\\Controllers\\ViagemController.cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Controllers\\ViagemController.cs",
+              "RelativeToolTip": "TravelAI\\Controllers\\ViagemController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-03T23:59:49.505Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "AtividadeDTO.cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\DTOs\\AtividadeDTO.cs",
+              "RelativeDocumentMoniker": "TravelAI\\DTOs\\AtividadeDTO.cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\DTOs\\AtividadeDTO.cs",
+              "RelativeToolTip": "TravelAI\\DTOs\\AtividadeDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-29T23:13:36.358Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "IItinerarioService.cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Interfaces\\IItinerarioService.cs",
+              "RelativeDocumentMoniker": "TravelAI\\Interfaces\\IItinerarioService.cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Interfaces\\IItinerarioService.cs",
+              "RelativeToolTip": "TravelAI\\Interfaces\\IItinerarioService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-29T23:35:20.57Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "AtividadeService.cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Services\\AtividadeService.cs",
+              "RelativeDocumentMoniker": "TravelAI\\Services\\AtividadeService.cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Services\\AtividadeService.cs",
+              "RelativeToolTip": "TravelAI\\Services\\AtividadeService.cs",
+              "ViewState": "AgIAAEwAAAAAAAAAAAAUwGMAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-03T15:28:52.936Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "DiaItinerarioService.cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Services\\DiaItinerarioService.cs",
+              "RelativeDocumentMoniker": "TravelAI\\Services\\DiaItinerarioService.cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Services\\DiaItinerarioService.cs",
+              "RelativeToolTip": "TravelAI\\Services\\DiaItinerarioService.cs",
+              "ViewState": "AgIAADIAAAAAAAAAAAAiwEMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-03T15:28:01.566Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "McpModels.cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\McpIntegration\\McpModels.cs",
+              "RelativeDocumentMoniker": "TravelAI\\McpIntegration\\McpModels.cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\McpIntegration\\McpModels.cs",
+              "RelativeToolTip": "TravelAI\\McpIntegration\\McpModels.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-03T17:54:59.232Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Atividade.cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Models\\Atividade.cs",
+              "RelativeDocumentMoniker": "TravelAI\\Models\\Atividade.cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Models\\Atividade.cs",
+              "RelativeToolTip": "TravelAI\\Models\\Atividade.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-13T01:30:07.817Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "McpOrchestrato.cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\McpIntegration\\McpOrchestrato.cs",
+              "RelativeDocumentMoniker": "TravelAI\\McpIntegration\\McpOrchestrato.cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\McpIntegration\\McpOrchestrato.cs",
+              "RelativeToolTip": "TravelAI\\McpIntegration\\McpOrchestrato.cs",
+              "ViewState": "AgIAAFkAAAAAAAAAAAAgwG8AAABJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-03T17:56:39.052Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "ItinerarioDTO.cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\DTOs\\ItinerarioDTO.cs",
+              "RelativeDocumentMoniker": "TravelAI\\DTOs\\ItinerarioDTO.cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\DTOs\\ItinerarioDTO.cs",
+              "RelativeToolTip": "TravelAI\\DTOs\\ItinerarioDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-29T22:57:05.188Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "DiaItinerarioDTO.cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\DTOs\\DiaItinerarioDTO.cs",
+              "RelativeDocumentMoniker": "TravelAI\\DTOs\\DiaItinerarioDTO.cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\DTOs\\DiaItinerarioDTO.cs",
+              "RelativeToolTip": "TravelAI\\DTOs\\DiaItinerarioDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-29T23:12:25.957Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "IMcpOrchestrator.cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Interfaces\\IMcpOrchestrator.cs",
+              "RelativeDocumentMoniker": "TravelAI\\Interfaces\\IMcpOrchestrator.cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Interfaces\\IMcpOrchestrator.cs",
+              "RelativeToolTip": "TravelAI\\Interfaces\\IMcpOrchestrator.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-03T17:56:09.32Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "docker-compose.yml",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\docker-compose.yml",
+              "RelativeDocumentMoniker": "docker-compose.yml",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\docker-compose.yml",
+              "RelativeToolTip": "docker-compose.yml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003775|",
+              "WhenOpened": "2026-08-13T01:11:03.562Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "IDiaItinerarioService.cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Interfaces\\IDiaItinerarioService.cs",
+              "RelativeDocumentMoniker": "TravelAI\\Interfaces\\IDiaItinerarioService.cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Interfaces\\IDiaItinerarioService.cs",
+              "RelativeToolTip": "TravelAI\\Interfaces\\IDiaItinerarioService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-29T23:37:31.969Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "ViagemDTO.cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\DTOs\\ViagemDTO.cs",
+              "RelativeDocumentMoniker": "TravelAI\\DTOs\\ViagemDTO.cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\DTOs\\ViagemDTO.cs",
+              "RelativeToolTip": "TravelAI\\DTOs\\ViagemDTO.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAA5wBgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-29T22:41:54.01Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "IViagemService.cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Interfaces\\IViagemService.cs",
+              "RelativeDocumentMoniker": "TravelAI\\Interfaces\\IViagemService.cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Interfaces\\IViagemService.cs",
+              "RelativeToolTip": "TravelAI\\Interfaces\\IViagemService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-29T23:23:08.412Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "TravelAIContext .cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Data\\TravelAIContext .cs",
+              "RelativeDocumentMoniker": "TravelAI\\Data\\TravelAIContext .cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Data\\TravelAIContext .cs",
+              "RelativeToolTip": "TravelAI\\Data\\TravelAIContext .cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAswCUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-13T01:32:18.008Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "IAtividadeService.cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Interfaces\\IAtividadeService.cs",
+              "RelativeDocumentMoniker": "TravelAI\\Interfaces\\IAtividadeService.cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Interfaces\\IAtividadeService.cs",
+              "RelativeToolTip": "TravelAI\\Interfaces\\IAtividadeService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-29T23:38:01.138Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "ViagemService.cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Services\\ViagemService.cs",
+              "RelativeDocumentMoniker": "TravelAI\\Services\\ViagemService.cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Services\\ViagemService.cs",
+              "RelativeToolTip": "TravelAI\\Services\\ViagemService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAABLAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-31T15:47:12.363Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "Viagem.cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Models\\Viagem.cs",
+              "RelativeDocumentMoniker": "TravelAI\\Models\\Viagem.cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Models\\Viagem.cs",
+              "RelativeToolTip": "TravelAI\\Models\\Viagem.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-13T01:31:39.545Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "PrevisaoTempo.cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Models\\PrevisaoTempo.cs",
+              "RelativeDocumentMoniker": "TravelAI\\Models\\PrevisaoTempo.cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Models\\PrevisaoTempo.cs",
+              "RelativeToolTip": "TravelAI\\Models\\PrevisaoTempo.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-13T01:29:27.654Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "TipoAtividade.cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Models\\TipoAtividade.cs",
+              "RelativeDocumentMoniker": "TravelAI\\Models\\TipoAtividade.cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Models\\TipoAtividade.cs",
+              "RelativeToolTip": "TravelAI\\Models\\TipoAtividade.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-13T01:28:32.931Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "DiaItinerario.cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Models\\DiaItinerario.cs",
+              "RelativeDocumentMoniker": "TravelAI\\Models\\DiaItinerario.cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Models\\DiaItinerario.cs",
+              "RelativeToolTip": "TravelAI\\Models\\DiaItinerario.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-13T01:30:45.101Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "Itinerario.cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Models\\Itinerario.cs",
+              "RelativeDocumentMoniker": "TravelAI\\Models\\Itinerario.cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Models\\Itinerario.cs",
+              "RelativeToolTip": "TravelAI\\Models\\Itinerario.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-13T01:31:18.434Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "EstadoViagem.cs",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Models\\EstadoViagem.cs",
+              "RelativeDocumentMoniker": "TravelAI\\Models\\EstadoViagem.cs",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\Models\\EstadoViagem.cs",
+              "RelativeToolTip": "TravelAI\\Models\\EstadoViagem.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-26T22:07:07.68Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "TravelAI.csproj",
+              "DocumentMoniker": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\TravelAI.csproj",
+              "RelativeDocumentMoniker": "TravelAI\\TravelAI.csproj",
+              "ToolTip": "C:\\Users\\maria\\Documents\\LEI\\LEI\\3 ANO\\Projeto Final\\TravelAI\\TravelAI\\TravelAI.csproj",
+              "RelativeToolTip": "TravelAI\\TravelAI.csproj",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAowBcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-08-25T14:06:47.34Z"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 258,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 338,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:132:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:133:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:131:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -13,7 +13,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8080
-      - ConnectionStrings__DefaultConnection=Server=db;Database=TravelAIDb;User Id=sa;Password=Password123!;TrustServerCertificate=True
+      - ConnectionStrings__DefaultConnection=Server=db,1433;Database=TravelAIDb;User Id=sa;Password=Password123!;TrustServerCertificate=True;Integrated Security=False;Connect Retry Count=5;Connect Retry Interval=10;
 
   db:
     image: mcr.microsoft.com/mssql/server:2022-latest
