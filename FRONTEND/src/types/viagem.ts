@@ -1,15 +1,17 @@
+// Tipos alinhados com TravelAI.DTOs (backend .NET)
+// Nota: Ids são GUIDs — representados como string em JSON/TS, nunca number.
+
 export interface AtividadeDTO {
-  id?: number;
-  titulo: string;
-  descricao?: string;
-  periodo: string;
+  id: string;
   ordem: number;
-  horaInicio?: string;
-  horaFim?: string;
-  local?: string;
-  custoEstimado?: number;
-  latitude?: number;
-  longitude?: number;
+  nome: string;
+  // string se o backend tiver JsonStringEnumConverter, número caso contrário
+  // — usa normalizarTipo()/rotuloTipo() de '../utils/tipoAtividade' para lidar com ambos
+  tipo: string | number;
+  horaInicio: string;
+  horaFim: string;
+  local: string;
+  detalhes?: string;
 }
 
 export interface PrevisaoTempoDTO {
@@ -20,50 +22,82 @@ export interface PrevisaoTempoDTO {
 }
 
 export interface DiaItinerarioDTO {
-  id?: number;
+  id: string;
   numeroDia: number;
   data: string;
-  previsaoTempo?: PrevisaoTempoDTO;
   atividades: AtividadeDTO[];
+  previsaoTempo?: PrevisaoTempoDTO | null;
+}
+
+export interface LugarSugeridoDTO {
+  nome: string;
+  morada?: string;
+  avaliacao?: number;
+  numAvaliacoes?: number;
+  nivelPreco?: string;
+  url?: string;
+  latitude?: number;
+  longitude?: number;
+}
+
+export interface SegmentoVooDTO {
+  origem: string;
+  destino: string;
+  duracao?: string;
+  paragens: number;
+}
+
+export interface VooSugeridoDTO {
+  id?: string;
+  companhia?: string;
+  preco?: string;
+  segmentos: SegmentoVooDTO[];
+  url?: string;
 }
 
 export interface ItinerarioDTO {
-  id?: number;
-  viagemId: number;
+  id: string;
+  viagemId: string;
   versao: number;
   criadoEm: string;
   dias: DiaItinerarioDTO[];
+  // Só vêm preenchidos na resposta imediata de POST /itinerarios/gerar —
+  // não são persistidos, por isso um GET posterior devolve listas vazias.
+  alojamentosReais?: LugarSugeridoDTO[];
+  restaurantesReais?: LugarSugeridoDTO[];
+  voosReais?: VooSugeridoDTO[];
 }
 
+// Corresponde ao que o ViagemController espera em POST /api/viagens
+// ⚠️ Confirmar campos exatos assim que tiveres o ViagemController — isto é
+// a melhor estimativa com base no modelo Viagem.cs (Titulo, Destino,
+// DataInicio, DataFim, NumViajantes, Orcamento).
 export interface CriarViagemDTO {
+  titulo: string;
   destino: string;
-  origem?: string;
   dataInicio: string;
   dataFim: string;
+  numViajantes: number;
   orcamento?: number;
-  estiloViagem?: string;
-  promptLinguagemNatural?: string;
 }
 
-export interface VooDTO {
-  id?: number;
-  companhiaAerea: string;
-  origemIATA: string;
-  destinoIATA: string;
-  dataPartida: string;
-  dataChegada: string;
-  preco: number;
-  escalas: number;
-  linkReserva?: string;
+// Campos que NÃO pertencem à Viagem em si, mas que alimentam o prompt
+// enviado a /api/itinerarios/gerar (GerarItinerarioRequestDTO)
+export interface GerarItinerarioRequestDTO {
+  viagemId: string;
+  instrucoesAdicionais?: string;
+  origemPartida?: string;
 }
 
-export interface AlojamentoDTO {
-  id?: number;
-  nome: string;
-  endereco?: string;
-  classificacao?: number;
-  precoEstimado?: number;
-  urlReserva?: string;
-  latitude?: number;
-  longitude?: number;
+export interface ViagemResponseDTO {
+  id: string;
+  titulo: string;
+  destino: string;
+  dataInicio: string;
+  dataFim: string;
+  numViajantes: number;
+  orcamento?: number;
+  estado: string;
+  criadoEm: string;
+  atualizadoEm: string;
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 using TravelAI.Data;
 using TravelAI.DTOs;
 using TravelAI.Interfaces;
@@ -12,6 +13,8 @@ namespace TravelAI.Services
         private readonly IMcpOrchestrator _mcpOrchestrator;
         private readonly ILlmService _llmService;
         private readonly ILogger<ItinerarioService> _logger;
+
+        private const int MaxIteracoesToolCalling = 4;
 
         private const string SystemPrompt = """
             És um assistente de planeamento de viagens. Usa as ferramentas disponíveis
@@ -27,6 +30,13 @@ namespace TravelAI.Services
             ≈ 80, "chuvisco" ≈ 30, "céu limpo" ≈ 0).
             """;
 
+        private const string SystemPromptCodigoIata = """
+            Indica o código IATA de 3 letras do aeroporto principal (ou mais movimentado)
+            da cidade indicada. Devolve APENAS o código, em maiúsculas, sem explicação.
+            Se não conseguires identificar com confiança um código válido, devolve uma
+            string vazia.
+            """;
+
         public ItinerarioService(
             TravelAIContext context,
             IMcpOrchestrator mcpOrchestrator,
@@ -38,8 +48,6 @@ namespace TravelAI.Services
             _llmService = llmService;
             _logger = logger;
         }
-
-        private const int MaxIteracoesToolCalling = 4;
 
         public async Task<ItinerarioResponseDTO> GerarNovaVersaoAsync(GerarItinerarioRequestDTO dto)
         {
@@ -62,6 +70,44 @@ namespace TravelAI.Services
                 new("system", SystemPrompt),
                 new("user", ConstruirPromptViagem(viagem, dto.InstrucoesAdicionais, dto.OrigemPartida))
             };
+
+            // Alojamento e restaurantes são pesquisados diretamente pelo backend,
+            // uma vez, de forma garantida — não se depende do Gemma decidir chamar
+            // estas tools nem com que argumento "tipo". São feitas SEQUENCIALMENTE
+            // (não em paralelo) porque ambas usam o mesmo cliente MCP stdio do
+            // servidor 'google-places'; chamá-las em simultâneo (Task.WhenAll)
+            // já causou cross-talk observado — resultados de uma pesquisa a
+            // aparecerem na outra. Round-trip um pouco mais lento, mas fiável.
+            var alojamentosReais = await BuscarLugaresReaisAsync(
+                "google-places__pesquisar_alojamento",
+                new Dictionary<string, object?> { ["destino"] = viagem.Destino });
+
+            var restaurantesReais = await BuscarLugaresReaisAsync(
+                "google-places__pesquisar_pontos_interesse",
+                new Dictionary<string, object?> { ["destino"] = viagem.Destino, ["tipo"] = "restaurantes" });
+
+            // Voos, também de forma determinística — só se houver origem definida.
+            // O código IATA do destino é resolvido por uma chamada dedicada ao LLM
+            // (o mesmo padrão usado para extrair o itinerário/tempo estruturado),
+            // já que a tool da Duffel exige um código de 3 letras, não um nome de
+            // cidade em texto livre.
+            var voosReais = new List<VooSugeridoDTO>();
+            if (!string.IsNullOrWhiteSpace(dto.OrigemPartida))
+            {
+                var codigoDestino = await ResolverCodigoIataAsync(viagem.Destino);
+
+                if (!string.IsNullOrWhiteSpace(codigoDestino))
+                {
+                    voosReais = await BuscarVoosReaisAsync(
+                        dto.OrigemPartida!, codigoDestino, viagem.DataInicio, viagem.DataFim, viagem.NumViajantes);
+                }
+                else
+                {
+                    _logger.LogWarning(
+                        "Não foi possível resolver o código IATA para '{Destino}'; pesquisa de voos ignorada.",
+                        viagem.Destino);
+                }
+            }
 
             var resposta = await _llmService.ConversarAsync(mensagens, ferramentas);
 
@@ -115,8 +161,160 @@ namespace TravelAI.Services
                 throw new InvalidOperationException("Não foi possível gerar um itinerário válido.");
             }
 
-            return await PersistirItinerarioAsync(viagem.Id, estrutura);
+            var alojamentosFinais = ComLinkExterno(
+                alojamentosReais
+                    .GroupBy(a => a.Nome, StringComparer.OrdinalIgnoreCase)
+                    .Select(g => g.First())
+                    .ToList(),
+                viagem.Destino, ehAlojamento: true);
+
+            var restaurantesFinais = ComLinkExterno(
+                restaurantesReais
+                    .GroupBy(r => r.Nome, StringComparer.OrdinalIgnoreCase)
+                    .Select(g => g.First())
+                    .ToList(),
+                viagem.Destino, ehAlojamento: false);
+
+            return await PersistirItinerarioAsync(
+                viagem.Id, estrutura, alojamentosFinais, restaurantesFinais, voosReais);
         }
+
+        // Resolve o código IATA do aeroporto principal de uma cidade através de
+        // uma chamada estruturada ao LLM (mesma técnica usada para o itinerário
+        // e a previsão do tempo). Devolve null se não conseguir um código válido
+        // de 3 letras — nesse caso a pesquisa de voos é simplesmente ignorada.
+        private async Task<string?> ResolverCodigoIataAsync(string cidade)
+        {
+            var schema = new
+            {
+                type = "object",
+                properties = new
+                {
+                    codigo = new { type = "string" }
+                },
+                required = new[] { "codigo" }
+            };
+
+            var resultado = await _llmService.ExtrairEstruturadoAsync<CodigoIataResultado>(
+                cidade, SystemPromptCodigoIata, schema);
+
+            var codigo = resultado?.Codigo?.Trim().ToUpperInvariant();
+
+            return !string.IsNullOrWhiteSpace(codigo) && codigo.Length == 3 ? codigo : null;
+        }
+
+        private async Task<List<VooSugeridoDTO>> BuscarVoosReaisAsync(
+            string origemIata, string destinoIata, DateTime dataInicio, DateTime dataFim, int numPassageiros)
+        {
+            var resultado = await _mcpOrchestrator.ExecutarFerramentaAsync(
+                "duffel__pesquisar_voos",
+                new Dictionary<string, object?>
+                {
+                    ["origem"] = origemIata,
+                    ["destino"] = destinoIata,
+                    ["dataPartida"] = dataInicio.ToString("yyyy-MM-dd"),
+                    ["dataRegresso"] = dataFim.ToString("yyyy-MM-dd"),
+                    ["numPassageiros"] = Math.Max(1, numPassageiros)
+                });
+
+            if (!resultado.Sucesso || string.IsNullOrWhiteSpace(resultado.ResultadoJson))
+            {
+                _logger.LogWarning("Falha ao obter voos reais ({Origem} -> {Destino}): {Erro}",
+                    origemIata, destinoIata, resultado.MensagemErro);
+                return new List<VooSugeridoDTO>();
+            }
+
+            try
+            {
+                var voos = JsonSerializer.Deserialize<List<VooBrutoMcp>>(
+                    resultado.ResultadoJson, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                var urlGoogleFlights =
+                    $"https://www.google.com/travel/flights?q={Uri.EscapeDataString($"voos de {origemIata} para {destinoIata} em {dataInicio:yyyy-MM-dd}")}";
+
+                return voos?.Select(v => new VooSugeridoDTO(
+                    v.Id, v.Companhia, v.Preco,
+                    v.Segmentos?.Select(s => new SegmentoVooDTO(
+                        s.Origem ?? "", s.Destino ?? "", s.Duracao, s.Paragens)).ToList()
+                        ?? new List<SegmentoVooDTO>(),
+                    Url: urlGoogleFlights
+                )).ToList() ?? new List<VooSugeridoDTO>();
+            }
+            catch (JsonException ex)
+            {
+                _logger.LogWarning(ex, "Falha ao desserializar resultado de voos: {Json}", resultado.ResultadoJson);
+                return new List<VooSugeridoDTO>();
+            }
+        }
+
+        private class CodigoIataResultado
+        {
+            public string Codigo { get; set; } = string.Empty;
+        }
+
+        // Espelha a forma dos objetos devolvidos por flights_server.js
+        private class VooBrutoMcp
+        {
+            public string? Id { get; set; }
+            public string? Companhia { get; set; }
+            public string? Preco { get; set; }
+            public List<SegmentoBrutoMcp>? Segmentos { get; set; }
+        }
+
+        private class SegmentoBrutoMcp
+        {
+            public string? Origem { get; set; }
+            public string? Destino { get; set; }
+            public string? Duracao { get; set; }
+            public int Paragens { get; set; }
+        }
+
+        private async Task<List<LugarSugeridoDTO>> BuscarLugaresReaisAsync(
+            string nomeFerramenta, Dictionary<string, object?> argumentos)
+        {
+            var resultado = await _mcpOrchestrator.ExecutarFerramentaAsync(nomeFerramenta, argumentos);
+
+            if (!resultado.Sucesso || string.IsNullOrWhiteSpace(resultado.ResultadoJson))
+            {
+                _logger.LogWarning("Falha ao obter lugares reais de '{Ferramenta}': {Erro}",
+                    nomeFerramenta, resultado.MensagemErro);
+                return new List<LugarSugeridoDTO>();
+            }
+
+            return TentarDeserializarLugares(resultado.ResultadoJson);
+        }
+
+        private static List<LugarSugeridoDTO> TentarDeserializarLugares(string json)
+        {
+            try
+            {
+                var lugares = JsonSerializer.Deserialize<List<LugarBrutoMcp>>(
+                    json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                return lugares?
+                    .Where(l => !string.IsNullOrWhiteSpace(l.Nome))
+                    .Select(l => new LugarSugeridoDTO(
+                        l.Nome!, l.Morada, l.Avaliacao, l.NumAvaliacoes, l.NivelPreco,
+                        Latitude: l.Latitude, Longitude: l.Longitude))
+                    .ToList() ?? new List<LugarSugeridoDTO>();
+            }
+            catch (JsonException)
+            {
+                return new List<LugarSugeridoDTO>();
+            }
+        }
+
+        private class LugarBrutoMcp
+        {
+            public string? Nome { get; set; }
+            public string? Morada { get; set; }
+            public double? Avaliacao { get; set; }
+            public int? NumAvaliacoes { get; set; }
+            public string? NivelPreco { get; set; }
+            public double? Latitude { get; set; }
+            public double? Longitude { get; set; }
+        }
+
         private async Task<List<PrevisaoDiaEstruturada>> ObterPrevisoesAsync(string destino, int numDias)
         {
             var diasAPedir = Math.Min(numDias, 7);
@@ -171,6 +369,7 @@ namespace TravelAI.Services
                 dias = new
                 {
                     type = "array",
+                    minItems = 1,
                     items = new
                     {
                         type = "object",
@@ -181,6 +380,7 @@ namespace TravelAI.Services
                             atividades = new
                             {
                                 type = "array",
+                                minItems = 1,
                                 items = new
                                 {
                                     type = "object",
@@ -227,7 +427,11 @@ namespace TravelAI.Services
         }
 
         private async Task<ItinerarioResponseDTO> PersistirItinerarioAsync(
-            Guid viagemId, ItinerarioEstruturado estrutura)
+            Guid viagemId,
+            ItinerarioEstruturado estrutura,
+            List<LugarSugeridoDTO> alojamentosReais,
+            List<LugarSugeridoDTO> restaurantesReais,
+            List<VooSugeridoDTO> voosReais)
         {
             var viagem = await _context.Viagens.FindAsync(viagemId)
                 ?? throw new InvalidOperationException($"Viagem {viagemId} não encontrada.");
@@ -246,11 +450,8 @@ namespace TravelAI.Services
             };
             _context.Itinerarios.Add(itinerario);
 
-            // Previsão do tempo — limitação conhecida: só é significativa para
-            // viagens dentro dos próximos 7 dias (limite da API gratuita Open-Meteo)
             var previsoes = await ObterPrevisoesAsync(viagem.Destino, estrutura.Dias.Count);
 
-            var diasCriados = new List<DiaItinerario>();
             foreach (var diaDto in estrutura.Dias)
             {
                 var dia = new DiaItinerario
@@ -258,10 +459,9 @@ namespace TravelAI.Services
                     Id = Guid.NewGuid(),
                     ItinerarioId = itinerario.Id,
                     NumeroDia = diaDto.NumeroDia,
-                    Data = diaDto.Data
+                    Data = viagem.DataInicio.AddDays(diaDto.NumeroDia - 1)
                 };
                 _context.DiasItinerario.Add(dia);
-                diasCriados.Add(dia);
 
                 var ordem = 0;
                 foreach (var ativDto in diaDto.Atividades)
@@ -281,7 +481,6 @@ namespace TravelAI.Services
                     });
                 }
 
-                // Associa a previsão correspondente, se existir para este número de dia
                 var previsaoDia = previsoes.FirstOrDefault(p => p.NumeroDia == diaDto.NumeroDia);
                 if (previsaoDia is not null)
                 {
@@ -299,8 +498,12 @@ namespace TravelAI.Services
 
             await _context.SaveChangesAsync();
 
-            return await ObterPorIdAsync(itinerario.Id)
-                ?? throw new InvalidOperationException("Falha ao persistir itinerário.");
+            var itinerarioCompleto = await _context.Itinerarios
+                .Include(i => i.Dias).ThenInclude(d => d.Atividades)
+                .Include(i => i.Dias).ThenInclude(d => d.PrevisaoTempo)
+                .FirstAsync(i => i.Id == itinerario.Id);
+
+            return MapToDto(itinerarioCompleto, alojamentosReais, restaurantesReais, voosReais);
         }
 
         public async Task<ItinerarioResponseDTO?> ObterAtualPorViagemIdAsync(Guid viagemId)
@@ -324,7 +527,7 @@ namespace TravelAI.Services
                 .OrderByDescending(i => i.Versao)
                 .ToListAsync();
 
-            return itinerarios.Select(MapToDto);
+            return itinerarios.Select(i => MapToDto(i));
         }
 
         public async Task<ItinerarioResponseDTO?> ObterPorIdAsync(Guid itinerarioId)
@@ -357,7 +560,25 @@ namespace TravelAI.Services
                    $"para {v.NumViajantes} pessoa(s), com orçamento aproximado de {v.Orcamento:C}.{origemTexto} " +
                    (string.IsNullOrWhiteSpace(instrucoes) ? "" : $"Instruções adicionais: {instrucoes}");
         }
-        private static ItinerarioResponseDTO MapToDto(Itinerario i) => new(
+
+        private static List<LugarSugeridoDTO> ComLinkExterno(
+            List<LugarSugeridoDTO> lugares, string destino, bool ehAlojamento)
+        {
+            return lugares.Select(l =>
+            {
+                var url = ehAlojamento
+                    ? $"https://www.booking.com/searchresults.html?ss={Uri.EscapeDataString($"{l.Nome} {destino}")}"
+                    : $"https://www.google.com/maps/search/?api=1&query={Uri.EscapeDataString($"{l.Nome} {l.Morada ?? destino}")}";
+
+                return l with { Url = url };
+            }).ToList();
+        }
+
+        private static ItinerarioResponseDTO MapToDto(
+            Itinerario i,
+            List<LugarSugeridoDTO>? alojamentosReais = null,
+            List<LugarSugeridoDTO>? restaurantesReais = null,
+            List<VooSugeridoDTO>? voosReais = null) => new(
             i.Id, i.ViagemId, i.Versao, i.CriadoEm,
             i.Dias.OrderBy(d => d.NumeroDia).Select(d => new DiaItinerarioResponseDTO(
                 d.Id, d.NumeroDia, d.Data,
@@ -375,11 +596,13 @@ namespace TravelAI.Services
                 d.PrevisaoTempo is null ? null : new PrevisaoTempoResponseDTO(
                     d.PrevisaoTempo.TempMax, d.PrevisaoTempo.TempMin,
                     d.PrevisaoTempo.Condicao, d.PrevisaoTempo.ProbabilidadePrecipitacao)
-            )).ToList()
+            )).ToList(),
+            alojamentosReais ?? new List<LugarSugeridoDTO>(),
+            restaurantesReais ?? new List<LugarSugeridoDTO>(),
+            voosReais ?? new List<VooSugeridoDTO>()
         );
     }
 
-   
     internal class ItinerarioEstruturado
     {
         public List<DiaEstruturado> Dias { get; set; } = new();
