@@ -2,7 +2,8 @@
 {
     public record GerarItinerarioRequestDTO(
         Guid ViagemId,
-        string? InstrucoesAdicionais
+        string? InstrucoesAdicionais,
+        string? OrigemPartida = null
     );
 
     public record ItinerarioResponseDTO(

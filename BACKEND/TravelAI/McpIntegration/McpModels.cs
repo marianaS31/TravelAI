@@ -5,6 +5,7 @@
         public string Nome { get; set; } = string.Empty;
         public string Comando { get; set; } = string.Empty;
         public List<string> Argumentos { get; set; } = new();
+        public Dictionary<string, string>? VariaveisAmbiente { get; set; }  
     }
 
     // Ferramenta descoberta num servidor MCP, já com nome qualificado

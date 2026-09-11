@@ -44,3 +44,26 @@ export interface CriarViagemDTO {
   estiloViagem?: string;
   promptLinguagemNatural?: string;
 }
+
+export interface VooDTO {
+  id?: number;
+  companhiaAerea: string;
+  origemIATA: string;
+  destinoIATA: string;
+  dataPartida: string;
+  dataChegada: string;
+  preco: number;
+  escalas: number;
+  linkReserva?: string;
+}
+
+export interface AlojamentoDTO {
+  id?: number;
+  nome: string;
+  endereco?: string;
+  classificacao?: number;
+  precoEstimado?: number;
+  urlReserva?: string;
+  latitude?: number;
+  longitude?: number;
+}

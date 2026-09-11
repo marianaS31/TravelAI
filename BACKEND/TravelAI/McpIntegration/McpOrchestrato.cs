@@ -35,7 +35,8 @@ namespace TravelAI.McpIntegration
                     {
                         Name = cfg.Nome,
                         Command = cfg.Comando,
-                        Arguments = cfg.Argumentos.ToArray()
+                        Arguments = cfg.Argumentos.ToArray(),
+                        EnvironmentVariables = cfg.VariaveisAmbiente
                     });
 
                     var client = await McpClient.CreateAsync(transport);

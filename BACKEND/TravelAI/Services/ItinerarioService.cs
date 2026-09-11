@@ -39,6 +39,8 @@ namespace TravelAI.Services
             _logger = logger;
         }
 
+        private const int MaxIteracoesToolCalling = 4;
+
         public async Task<ItinerarioResponseDTO> GerarNovaVersaoAsync(GerarItinerarioRequestDTO dto)
         {
             var viagem = await _context.Viagens.FindAsync(dto.ViagemId)
@@ -46,18 +48,27 @@ namespace TravelAI.Services
 
             var ferramentas = await _mcpOrchestrator.ObterDefinicoesParaLlmAsync();
 
+            // Sem origem, a tool de voos não tem como funcionar — remove-a do conjunto
+            // disponível para o Gemma, para não gastar iterações a tentar chamá-la.
+            if (string.IsNullOrWhiteSpace(dto.OrigemPartida))
+            {
+                ferramentas = ferramentas
+                    .Where(f => !((dynamic)f).function.name.ToString().StartsWith("duffel__"))
+                    .ToList();
+            }
+
             var mensagens = new List<ChatMessage>
             {
                 new("system", SystemPrompt),
-                new("user", ConstruirPromptViagem(viagem, dto.InstrucoesAdicionais))
+                new("user", ConstruirPromptViagem(viagem, dto.InstrucoesAdicionais, dto.OrigemPartida))
             };
 
             var resposta = await _llmService.ConversarAsync(mensagens, ferramentas);
 
-            // Caso o Gemma tenha chamado ferramentas autonomamente, executa-as
-            // e volta a perguntar-lhe com os resultados incluídos na conversa
-            if (resposta.ToolCalls.Count > 0)
+            var iteracao = 0;
+            while (resposta.ToolCalls.Count > 0 && iteracao < MaxIteracoesToolCalling)
             {
+                iteracao++;
                 mensagens.Add(new ChatMessage("assistant", resposta.TextoResposta ?? ""));
 
                 foreach (var toolCall in resposta.ToolCalls)
@@ -75,11 +86,27 @@ namespace TravelAI.Services
                         resultado.ResultadoJson ?? $"Erro: {resultado.MensagemErro}"));
                 }
 
+                _logger.LogInformation(
+                    "Iteração {N}/{Max} de tool-calling concluída para viagem {Id}, a repetir chamada ao LLM",
+                    iteracao, MaxIteracoesToolCalling, viagem.Id);
+
                 resposta = await _llmService.ConversarAsync(mensagens, ferramentas);
             }
 
-            // Fallback determinístico: o Gemma frequentemente ignora instruções
-            // de tool-calling — extraímos a estrutura do texto livre à parte
+            if (resposta.ToolCalls.Count > 0 || string.IsNullOrWhiteSpace(resposta.TextoResposta))
+            {
+                _logger.LogWarning(
+                    "Limite de {Max} iterações atingido para viagem {Id}; a forçar resposta final sem ferramentas",
+                    MaxIteracoesToolCalling, viagem.Id);
+
+                mensagens.Add(new ChatMessage("assistant", resposta.TextoResposta ?? ""));
+                mensagens.Add(new ChatMessage("user",
+                    "Não uses mais nenhuma ferramenta. Com base em toda a informação já recolhida " +
+                    "acima, gera agora o itinerário final completo, dia a dia."));
+
+                resposta = await _llmService.ConversarAsync(mensagens, new List<object>());
+            }
+
             var estrutura = await ExtrairEGuardarItinerarioAsync(resposta.TextoResposta ?? "");
 
             if (estrutura is null)
@@ -90,7 +117,6 @@ namespace TravelAI.Services
 
             return await PersistirItinerarioAsync(viagem.Id, estrutura);
         }
-
         private async Task<List<PrevisaoDiaEstruturada>> ObterPrevisoesAsync(string destino, int numDias)
         {
             var diasAPedir = Math.Min(numDias, 7);
@@ -321,11 +347,16 @@ namespace TravelAI.Services
             return true;
         }
 
-        private static string ConstruirPromptViagem(Viagem v, string? instrucoes) =>
-            $"Planeia uma viagem para {v.Destino}, de {v.DataInicio:yyyy-MM-dd} a {v.DataFim:yyyy-MM-dd}, " +
-            $"para {v.NumViajantes} pessoa(s), com orçamento aproximado de {v.Orcamento:C}. " +
-            (string.IsNullOrWhiteSpace(instrucoes) ? "" : $"Instruções adicionais: {instrucoes}");
+        private static string ConstruirPromptViagem(Viagem v, string? instrucoes, string? origemPartida)
+        {
+            var origemTexto = string.IsNullOrWhiteSpace(origemPartida)
+                ? ""
+                : $" A viagem parte de {origemPartida}.";
 
+            return $"Planeia uma viagem para {v.Destino}, de {v.DataInicio:yyyy-MM-dd} a {v.DataFim:yyyy-MM-dd}, " +
+                   $"para {v.NumViajantes} pessoa(s), com orçamento aproximado de {v.Orcamento:C}.{origemTexto} " +
+                   (string.IsNullOrWhiteSpace(instrucoes) ? "" : $"Instruções adicionais: {instrucoes}");
+        }
         private static ItinerarioResponseDTO MapToDto(Itinerario i) => new(
             i.Id, i.ViagemId, i.Versao, i.CriadoEm,
             i.Dias.OrderBy(d => d.NumeroDia).Select(d => new DiaItinerarioResponseDTO(

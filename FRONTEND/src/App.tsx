@@ -3,6 +3,8 @@ import { api } from './api/api';
 import type { ItinerarioDTO, CriarViagemDTO } from './types/viagem';
 import { FormCriarViagem } from './components/FormCriarViagem';
 import { ChatAssistente } from './components/ChatAssistente';
+import { VoosAlojamento } from './components/VoosAlojamento';
+import type { VooDTO, AlojamentoDTO } from './types/viagem';
 import {
   Compass,
   Calendar,
@@ -20,6 +22,8 @@ export default function App() {
   const [viagemAtual, setViagemAtual] = useState<CriarViagemDTO | null>(null);
   const [erro, setErro] = useState<string | null>(null);
   const [chatAberto, setChatAberto] = useState(false);
+  const [voos, setVoos] = useState<VooDTO[]>([]);
+  const [alojamentos, setAlojamentos] = useState<AlojamentoDTO[]>([]);
 
   const handleCriarViagem = async (dados: CriarViagemDTO) => {
     setCarregando(true);
@@ -37,7 +41,7 @@ export default function App() {
       }. Notas: ${dados.promptLinguagemNatural || 'Nenhuma'}.`;
 
       // 3. Solicita a geração do itinerário
-      const respostaItinerario = await api.post('/itinerario/gerar', {
+      const respostaItinerario = await api.post('/itinerarios/gerar', {
         viagemId: viagemId,
         instrucoesAdicionais: instrucoes,
       });
