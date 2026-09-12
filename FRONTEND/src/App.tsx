@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { api } from './api/api';
-import type { ItinerarioDTO } from './types/viagem';
+import type { ItinerarioDTO, AuthResponseDTO, UtilizadorSessao, ViagemResponseDTO } from './types/viagem';
 import { FormCriarViagem } from './components/FormCriarViagem';
 import type { DadosViagem, DadosGeracao } from './components/FormCriarViagem';
 import { ChatAssistente } from './components/ChatAssistente';
 import { MapaLugares } from './components/MapaLugares';
+import { LoginRegisterModal } from './components/LoginRegisterModal';
+import { HistoricoViagens } from './components/HistoricoViagens';
 import {
   Compass,
   CloudSun,
@@ -17,7 +19,22 @@ import {
   Star,
   ExternalLink,
   Plane,
+  History,
 } from 'lucide-react';
+
+function carregarSessaoInicial(): UtilizadorSessao | null {
+  try {
+    const raw = localStorage.getItem('travelai_sessao');
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+function formatarData(valor: string): string {
+  const d = new Date(valor);
+  return isNaN(d.getTime()) ? valor : d.toLocaleDateString('pt-PT');
+}
 
 export default function App() {
   const [carregando, setCarregando] = useState(false);
@@ -26,6 +43,12 @@ export default function App() {
   const [origemPartida, setOrigemPartida] = useState<string | undefined>(undefined);
   const [erro, setErro] = useState<string | null>(null);
   const [chatAberto, setChatAberto] = useState(false);
+
+  const [sessao, setSessao] = useState<UtilizadorSessao | null>(carregarSessaoInicial);
+  const [mostrarLogin, setMostrarLogin] = useState(false);
+  const [motivoLogin, setMotivoLogin] = useState<string | undefined>(undefined);
+  const [intencaoPendente, setIntencaoPendente] = useState<'chat' | 'historico' | null>(null);
+  const [mostrarHistorico, setMostrarHistorico] = useState(false);
 
   const handleCriarViagem = async (viagem: DadosViagem, geracao: DadosGeracao) => {
     setCarregando(true);
@@ -55,6 +78,66 @@ export default function App() {
     }
   };
 
+  const abrirChat = () => {
+    if (!sessao) {
+      setMotivoLogin('Precisas de uma conta para ajustar o roteiro com o assistente de IA.');
+      setIntencaoPendente('chat');
+      setMostrarLogin(true);
+      return;
+    }
+    setChatAberto(true);
+  };
+
+  const abrirHistorico = () => {
+    if (!sessao) {
+      setMotivoLogin('Precisas de uma conta para veres o teu histórico de viagens.');
+      setIntencaoPendente('historico');
+      setMostrarLogin(true);
+      return;
+    }
+    setMostrarHistorico(true);
+  };
+
+  const handleLoginSucesso = (auth: AuthResponseDTO) => {
+    localStorage.setItem('travelai_token', auth.token);
+    const nova: UtilizadorSessao = { utilizadorId: auth.utilizadorId, nome: auth.nome, email: auth.email };
+    localStorage.setItem('travelai_sessao', JSON.stringify(nova));
+    setSessao(nova);
+    setMostrarLogin(false);
+
+    if (intencaoPendente === 'chat') setChatAberto(true);
+    if (intencaoPendente === 'historico') setMostrarHistorico(true);
+    setIntencaoPendente(null);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('travelai_token');
+    localStorage.removeItem('travelai_sessao');
+    setSessao(null);
+    setMostrarHistorico(false);
+    setChatAberto(false);
+  };
+
+  const handleAbrirViagemHistorico = async (viagem: ViagemResponseDTO) => {
+    setErro(null);
+    try {
+      const resposta = await api.get<ItinerarioDTO>(`/viagens/${viagem.id}/itinerario-atual`);
+      setItinerario(resposta.data);
+      setViagemAtual({
+        titulo: viagem.titulo,
+        destino: viagem.destino,
+        dataInicio: viagem.dataInicio,
+        dataFim: viagem.dataFim,
+        numViajantes: viagem.numViajantes,
+        orcamento: viagem.orcamento,
+      });
+      setOrigemPartida(undefined);
+      setMostrarHistorico(false);
+    } catch {
+      setErro('Não foi possível carregar o itinerário desta viagem.');
+    }
+  };
+
   const ordenarPorAvaliacao = <T extends { avaliacao?: number }>(lista: T[]): T[] =>
     [...lista].sort((a, b) => (b.avaliacao ?? -1) - (a.avaliacao ?? -1));
 
@@ -76,24 +159,54 @@ export default function App() {
             </span>
           </div>
 
-          {itinerario && (
-            <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
+            {itinerario && !mostrarHistorico && (
+              <>
+                <button
+                  onClick={() => setItinerario(null)}
+                  className="inline-flex items-center gap-2 px-3 py-2 text-white/70 hover:text-white transition text-sm"
+                >
+                  <ArrowLeft size={15} />
+                  <span>Novo roteiro</span>
+                </button>
+                <button
+                  onClick={abrirChat}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-[#C8973C] text-[#17324B] rounded-full font-semibold hover:bg-[#d9aa50] transition text-sm"
+                >
+                  <MessageSquareText size={16} />
+                  <span>Ajustar com IA</span>
+                </button>
+              </>
+            )}
+
+            <button
+              onClick={abrirHistorico}
+              className="inline-flex items-center gap-1.5 text-white/70 hover:text-white transition text-sm"
+            >
+              <History size={15} />
+              <span>Histórico</span>
+            </button>
+
+            {sessao ? (
+              <div className="flex items-center gap-2 text-sm">
+                <span className="text-white">{sessao.nome}</span>
+                <button onClick={handleLogout} className="text-white/50 hover:text-white text-xs underline">
+                  Sair
+                </button>
+              </div>
+            ) : (
               <button
-                onClick={() => setItinerario(null)}
-                className="inline-flex items-center gap-2 px-4 py-2 text-white/70 hover:text-white transition text-sm"
+                onClick={() => {
+                  setMotivoLogin(undefined);
+                  setIntencaoPendente(null);
+                  setMostrarLogin(true);
+                }}
+                className="text-white/70 hover:text-white transition text-sm"
               >
-                <ArrowLeft size={15} />
-                <span>Novo roteiro</span>
+                Entrar
               </button>
-              <button
-                onClick={() => setChatAberto(!chatAberto)}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-[#C8973C] text-[#17324B] rounded-full font-semibold hover:bg-[#d9aa50] transition text-sm"
-              >
-                <MessageSquareText size={16} />
-                <span>Alterar viagem</span>
-              </button>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </header>
 
@@ -104,7 +217,12 @@ export default function App() {
           </div>
         )}
 
-        {!itinerario ? (
+        {mostrarHistorico ? (
+          <HistoricoViagens
+            onAbrirViagem={handleAbrirViagemHistorico}
+            onVoltar={() => setMostrarHistorico(false)}
+          />
+        ) : !itinerario ? (
           <FormCriarViagem aoSubmeter={handleCriarViagem} carregando={carregando} />
         ) : (
           <div className="space-y-12">
@@ -118,8 +236,8 @@ export default function App() {
                   {viagemAtual?.destino}
                 </h2>
                 <p className="text-sm text-[#4B5A68] mt-2">
-                  {viagemAtual?.dataInicio} — {viagemAtual?.dataFim} &nbsp;·&nbsp; {viagemAtual?.numViajantes}{' '}
-                  viajante{viagemAtual && viagemAtual.numViajantes > 1 ? 's' : ''}
+                  {viagemAtual && formatarData(viagemAtual.dataInicio)} — {viagemAtual && formatarData(viagemAtual.dataFim)}
+                  &nbsp;·&nbsp; {viagemAtual?.numViajantes} viajante{viagemAtual && viagemAtual.numViajantes > 1 ? 's' : ''}
                 </p>
               </div>
 
@@ -382,7 +500,7 @@ export default function App() {
         )}
       </main>
 
-      {itinerario && (
+      {itinerario && chatAberto && (
         <ChatAssistente
           viagemId={itinerario.viagemId}
           origemPartida={origemPartida}
@@ -391,6 +509,16 @@ export default function App() {
           onItinerarioAtualizado={(novo) => setItinerario(novo)}
         />
       )}
+
+      <LoginRegisterModal
+        aberto={mostrarLogin}
+        onFechar={() => {
+          setMostrarLogin(false);
+          setIntencaoPendente(null);
+        }}
+        onSucesso={handleLoginSucesso}
+        motivo={motivoLogin}
+      />
     </div>
   );
 }

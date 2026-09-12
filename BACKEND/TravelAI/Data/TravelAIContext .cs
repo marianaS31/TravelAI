@@ -13,6 +13,7 @@ namespace TravelAI.Data
         public DbSet<DiaItinerario> DiasItinerario => Set<DiaItinerario>();
         public DbSet<Atividade> Atividades => Set<Atividade>();
         public DbSet<PrevisaoTempo> PrevisoesTempo => Set<PrevisaoTempo>();
+        public DbSet<Utilizador> Utilizadores => Set<Utilizador>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -39,6 +40,19 @@ namespace TravelAI.Data
             modelBuilder.Entity<Viagem>()
                 .Property(v => v.Orcamento)
                 .HasPrecision(10, 2);
+
+            // Utilizador — email único, e ligação opcional a Viagem (nullable,
+            // para não partir viagens já existentes criadas antes desta feature)
+            modelBuilder.Entity<Utilizador>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+
+            modelBuilder.Entity<Viagem>()
+                .HasOne(v => v.Utilizador)
+                .WithMany()
+                .HasForeignKey(v => v.UtilizadorId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TravelAI.DTOs;
 using TravelAI.Interfaces;
 
@@ -6,6 +7,7 @@ namespace TravelAI.Controllers
 {
     [ApiController]
     [Route("api")]
+    
     public class ItinerarioController : ControllerBase
     {
         private readonly IItinerarioService _itinerarioService;
@@ -29,14 +31,14 @@ namespace TravelAI.Controllers
                 return BadRequest(new { erro = ex.Message });
             }
         }
-
+        [Authorize]
         [HttpGet("itinerarios/{id:guid}")]
         public async Task<ActionResult<ItinerarioResponseDTO>> ObterPorId(Guid id)
         {
             var itinerario = await _itinerarioService.ObterPorIdAsync(id);
             return itinerario is null ? NotFound() : Ok(itinerario);
         }
-
+        [Authorize]
         [HttpGet("viagens/{viagemId:guid}/itinerario-atual")]
         public async Task<ActionResult<ItinerarioResponseDTO>> ObterAtual(Guid viagemId)
         {
@@ -44,6 +46,7 @@ namespace TravelAI.Controllers
             return itinerario is null ? NotFound() : Ok(itinerario);
         }
 
+        [Authorize]
         [HttpGet("viagens/{viagemId:guid}/itinerarios")]
         public async Task<ActionResult<IEnumerable<ItinerarioResponseDTO>>> ObterHistorico(Guid viagemId)
         {
@@ -51,6 +54,7 @@ namespace TravelAI.Controllers
             return Ok(historico);
         }
 
+        [Authorize]
         [HttpDelete("itinerarios/{id:guid}")]
         public async Task<IActionResult> Remover(Guid id)
         {

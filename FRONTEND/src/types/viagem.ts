@@ -89,6 +89,19 @@ export interface GerarItinerarioRequestDTO {
   origemPartida?: string;
 }
 
+export interface AuthResponseDTO {
+  token: string;
+  utilizadorId: string;
+  nome: string;
+  email: string;
+}
+
+export interface UtilizadorSessao {
+  utilizadorId: string;
+  nome: string;
+  email: string;
+}
+
 export interface ViagemResponseDTO {
   id: string;
   titulo: string;
@@ -97,7 +110,7 @@ export interface ViagemResponseDTO {
   dataFim: string;
   numViajantes: number;
   orcamento?: number;
-  estado: string;
+  estado: string | number;
   criadoEm: string;
   atualizadoEm: string;
 }

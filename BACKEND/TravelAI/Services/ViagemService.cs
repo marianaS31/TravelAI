@@ -10,24 +10,42 @@ namespace TravelAI.Services
     {
         private readonly TravelAIContext _context;
         private readonly ILogger<ViagemService> _logger;
+        private readonly IUserService _currentUser;
 
-        public ViagemService(TravelAIContext context, ILogger<ViagemService> logger)
+        public ViagemService(TravelAIContext context, ILogger<ViagemService> logger, IUserService currentUser)
         {
             _context = context;
             _logger = logger;
+            _currentUser = currentUser;
         }
 
         public async Task<ViagemResponseDTO?> ObterPorIdAsync(Guid id)
         {
             var viagem = await _context.Viagens.FindAsync(id);
-            return viagem is null ? null : MapToDto(viagem);
+            if (viagem is null) return null;
+
+            // Viagens sem dono (legado, anteriores a esta funcionalidade) continuam
+            // acessíveis a qualquer utilizador autenticado; com dono, só o dono vê.
+            if (viagem.UtilizadorId is not null && viagem.UtilizadorId != _currentUser.UtilizadorId)
+                return null;
+
+            return MapToDto(viagem);
         }
 
         public async Task<IEnumerable<ViagemResponseDTO>> ObterTodasAsync()
         {
-            var viagens = await _context.Viagens
+            var utilizadorId = _currentUser.UtilizadorId;
+
+            var query = _context.Viagens.AsQueryable();
+            if (utilizadorId is not null)
+            {
+                query = query.Where(v => v.UtilizadorId == utilizadorId);
+            }
+
+            var viagens = await query
                 .OrderByDescending(v => v.CriadoEm)
                 .ToListAsync();
+
             return viagens.Select(MapToDto);
         }
 
@@ -45,13 +63,15 @@ namespace TravelAI.Services
                 Orcamento = dto.Orcamento,
                 Estado = EstadoViagem.Planeamento,
                 CriadoEm = agora,
-                AtualizadoEm = agora
+                AtualizadoEm = agora,
+                UtilizadorId = _currentUser.UtilizadorId
             };
 
             _context.Viagens.Add(viagem);
             await _context.SaveChangesAsync();
 
-            _logger.LogInformation("Viagem {Id} criada para destino {Destino}", viagem.Id, viagem.Destino);
+            _logger.LogInformation("Viagem {Id} criada para destino {Destino} (utilizador {UtilizadorId})",
+                viagem.Id, viagem.Destino, viagem.UtilizadorId);
             return MapToDto(viagem);
         }
 
@@ -59,6 +79,7 @@ namespace TravelAI.Services
         {
             var viagem = await _context.Viagens.FindAsync(id);
             if (viagem is null) return null;
+            if (viagem.UtilizadorId is not null && viagem.UtilizadorId != _currentUser.UtilizadorId) return null;
 
             if (dto.Titulo is not null) viagem.Titulo = dto.Titulo;
             if (dto.Destino is not null) viagem.Destino = dto.Destino;
@@ -78,6 +99,7 @@ namespace TravelAI.Services
         {
             var viagem = await _context.Viagens.FindAsync(id);
             if (viagem is null) return false;
+            if (viagem.UtilizadorId is not null && viagem.UtilizadorId != _currentUser.UtilizadorId) return false;
 
             _context.Viagens.Remove(viagem);
             await _context.SaveChangesAsync();

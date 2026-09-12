@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TravelAI.DTOs;
 using TravelAI.Interfaces;
 using TravelAI.Models;
@@ -7,6 +8,7 @@ namespace TravelAI.Controllers
 {
     [ApiController]
     [Route("api/viagens")]
+    
     public class ViagemController : ControllerBase
     {
         private readonly IViagemService _viagemService;
@@ -23,6 +25,7 @@ namespace TravelAI.Controllers
             return Ok(viagens);
         }
 
+        [Authorize]
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<ViagemResponseDTO>> ObterPorId(Guid id)
         {
@@ -37,6 +40,7 @@ namespace TravelAI.Controllers
             return CreatedAtAction(nameof(ObterPorId), new { id = viagem.Id }, viagem);
         }
 
+        [Authorize]
         [HttpPut("{id:guid}")]
         public async Task<ActionResult<ViagemResponseDTO>> Atualizar(Guid id, ViagemUpdateDTO dto)
         {
@@ -44,6 +48,7 @@ namespace TravelAI.Controllers
             return viagem is null ? NotFound() : Ok(viagem);
         }
 
+        [Authorize]
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Remover(Guid id)
         {
